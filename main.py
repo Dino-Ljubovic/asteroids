@@ -3,9 +3,11 @@
 # throughout this file
 import pygame
 from constants import *
-from player import Player
 from asteroid import Asteroid
 from asteroidfield import AsteroidField
+from player import Player
+from selectKeyboardLayout import SelectKeyboardLayout
+
 
 def main():
     pygame.init()
@@ -22,24 +24,26 @@ def main():
     drawable = pygame.sprite.Group()
     asteroids = pygame.sprite.Group()
 
+    SelectKeyboardLayout.containers = (updatable, drawable)
     Player.containers = (updatable, drawable)
     Asteroid.containers = (updatable, drawable, asteroids)
-    AsteroidField.containers = (updatable,)
-
+    AsteroidField.containers = updatable
     player_instance = Player(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
     ast_field = AsteroidField()
-
+    select_keyboard_layout = SelectKeyboardLayout(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
 
     while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 return
-        pygame.Surface.fill(screen, (0,0,0))
+        pygame.Surface.fill(screen, (0, 0, 0))
         for entity in updatable:
             entity.update(dt)
         for entity in drawable:
             entity.draw(screen)
         pygame.display.flip()
-        dt = clock.tick(60)/1000
+        dt = clock.tick(60) / 1000
+
+
 if __name__ == "__main__":
     main()
