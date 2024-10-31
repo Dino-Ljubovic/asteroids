@@ -2,10 +2,12 @@
 # the open-source pygame library
 # throughout this file
 import pygame
+import sys
 from constants import *
 from player import Player
 from asteroid import Asteroid
 from asteroidfield import AsteroidField
+from circleshape import CircleShape
 
 def main():
     pygame.init()
@@ -39,6 +41,10 @@ def main():
             entity.update(dt)
         for entity in drawable:
             entity.draw(screen)
+        for asteroid in asteroids:
+            if asteroid.collision(player_instance):
+                print("Game Over!")
+                sys.exit()
         pygame.display.flip()
         dt = clock.tick(60)/1000
 if __name__ == "__main__":
